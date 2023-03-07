@@ -1,4 +1,5 @@
-import requests, json
+import requests
+import re
 from django.core.management.base import BaseCommand
 from bs4 import BeautifulSoup
 
@@ -8,6 +9,11 @@ class Command(BaseCommand):
         print('syncing anime ...')
         play = Anime_parser()
         play.anime_colection()
+
+
+from bs4 import BeautifulSoup
+import requests
+import re
 
 
 class Anime_parser:
@@ -22,62 +28,57 @@ class Anime_parser:
 
 
 
-
-
-    #reads all anime
+     #reads all anime
     def anime_colection(self):
-        anime_url = {}
 
         while True:
             url = "https://jut.su/anime/page-" + str(self.page)
 
-            req = requests.get(url, headers= self.headers)
+            req = requests.get(url, headers= self.headers, timeout=None)
             src = req.text
             soup = BeautifulSoup(src, "lxml")
-            all_anime  = soup.find_all(class_ = "the_invis")
 
+            all_anime_href  = soup.find_all( class_ = "all_anime_global")
 
-            if len(all_anime):
-                for item in all_anime:
-                    item_a = item.next
-                    item_name = (''.join(item_a.text.split('смотреть')[-1:])).strip()
-                    item_href = "https://jut.su" + item_a.get("href")
-                    anime_url[item_name] = item_href
-                    print(f"{item_name} : {item_href}")
-
-                self.page += 1
-            else:
-                with open("anime_url.json", "w", encoding='utf-8') as file:
-                    json.dump(anime_url, file, indent=4, ensure_ascii=False)
+            if not all_anime_href:
                 break
 
+            for item in all_anime_href:
+                self.parse_anime_data(item)
 
-    #reads all series
-    def anime_series(self, url):
-        req = requests.get(url, headers= self.headers)
+
+            self.page += 1
+
+
+    def parse_anime_data(self, anime_card):
+
+        a = anime_card.a
+
+        anime_name = a.find('div', class_= 'aaname').text
+        anime_href = "https://jut.su" + a.get('href')
+        anime_series = a.find('div', class_='aailines').text
+        anime_images = a.find('div', class_='all_anime_image').get('style')
+        anime_image = re.findall(r"(?<=\(').*?(?='\))",anime_images)[0]
+        # print(anime_image)
+        self.series_colection(anime_href)
+
+
+    def series_colection(self, url):
+        req = requests.get(url, headers= self.headers, timeout=None)
         src = req.text
         soup = BeautifulSoup(src, "lxml")
-        series  = soup.find_all("a", class_="short-btn")
-        anime_series = {}
-        # print(series)
 
-        for item in series:
-            item_name = item.text
-            item_href = "https://jut.su" + item.get("href")
-            anime_series[item_name] = item_href
-            print(f"{item_name} : {item_href}")
-            with open("anime_series.json", "w", encoding='utf-8') as file:
-                json.dump(anime_series, file, indent=4, ensure_ascii=False)
+        card = soup.find('div', class_='watch_l')
+
+        self.parse_series_data(card)
 
 
-    #reads all video
-    def anime_video(self, url):
-        req = requests.get(url, headers= self.headers)
-        src = req.text
-        soup = BeautifulSoup(src, "lxml")
-        video  = soup.find("video").find_all('source')
 
-        for item in video:
-            item_quality = item.get('res')
-            item_video = item.get('src')
-            print(f"{item_quality} : {item_video}")
+    def parse_series_data(self, series_card):
+        btn = series_card.find_all('a', class_='short-btn')
+
+        descriptions = series_card.find('p', class_='under_video uv_rounded_bottom the_hildi').find('span').text
+
+        print(descriptions)
+        for series in btn:
+            num = series.text
