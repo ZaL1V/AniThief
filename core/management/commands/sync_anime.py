@@ -78,7 +78,25 @@ class Anime_parser:
         btn = series_card.find_all('a', class_='short-btn')
 
         descriptions = series_card.find('p', class_='under_video uv_rounded_bottom the_hildi').find('span').text
+        type_anime = series_card.find('div', class_='under_video_additional the_hildi').text #needs decorative adjustment
+        print(type_anime)
 
-        print(descriptions)
         for series in btn:
-            num = series.text
+            name_num = series.text
+            href_num = 'https://jut.su/' + series.get('href')
+            self.parse_video_url(href_num)
+            # print(f'{name_num} : {href_num}')
+
+
+    def parse_video_url(self, url):
+
+        req = requests.get(url, headers= self.headers, timeout=None)
+        src = req.text
+        soup = BeautifulSoup(src, "lxml")
+
+        video = soup.find('video').find_all('source')
+
+        for item in video:
+            quality = item.get('res')
+            href = item.get('src')
+            print(f'{quality} : {href}')
