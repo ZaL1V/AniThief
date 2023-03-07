@@ -82,7 +82,7 @@ class Anime_parser:
         print(type_anime)
 
         for series in btn:
-            name_num = series.text
+            name_num = series.text #needs decorative adjustment
             href_num = 'https://jut.su/' + series.get('href')
             self.parse_video_url(href_num)
             # print(f'{name_num} : {href_num}')

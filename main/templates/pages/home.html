@@ -1,80 +1,90 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<link rel="icon" type="image/x-icon" href="static/images/ukrain.ico">
-		<link rel="stylesheet" type="text/css" href="static/css/home.css">
-		<title>GO TO MOON</title>
-	</head>
-	<body>
-		<header> 
-			<a href="index.html" class="logo">GO TO ANIME</a>
-			<ul>
-				<li><a href="#" class="active">Додому</a></li>
-				<li><a href="#">Аніме</a></li>
-				<li><a href="#">Оновлення</a></li>
-				<img src="static/images/luna.png" class="user-pic" onclick = "toggleMenu()">
-			</ul>
-			<div class="sub-menu-wrap" id="subMenu">
-				<div class="sub-menu">
-					<div class="user-info">
-						<img src="static/images/luna.png">
-						<h3>Simon Bezel</h3>
-					</div>
-					<hr>
-					<a href="#" class="sub-menu-link">
-						<img src="static/images/profile.png">
-						<p> Профіль</p>
-						<span>></span>
-					</a>
-					<a href="#" class="sub-menu-link">
-						<img src="static/images/darkmode.png">
-						<p>Тема</p>
-						<span>></span>
-					</a>
-					<a href="#" class="sub-menu-link">
-						<img src="static/images/setting.png">
-						<p>Налаштування</p>
-						<span>></span>
-					</a>
-					<a href="#" class="sub-menu-link">
-						<img src="static/images/help.png">
-						<p>Допомога ЗСУ</p>
-						<span>></span>
-					</a>
-					<a href="#" class="sub-menu-link">
-						<img src="static/images/logout.png">
-						<p href="#" class="logout">Вихід</p>
-						<span>></span>
-					</a>
-				</div>
-			</div>	
-		</header>
-	<div>
-		<!-- Імпортувати файл grid.html -->
-		<div id="grid"></div>
-	</div>
-	
-	<div class="footer">	
-		<p>© 2023 ZaL1V & OriginalSimon</p>
-		<img src="static/images/telegram.png">
-		<img src="static/images/email.png">
-		<img src="static/images/question.png">
-		<img src="static/images/donat.png">
-	</div>
-	<script> 
-		let subMenu = document.getElementById('subMenu');
-		function toggleMenu() {
-			subMenu.classList.toggle("open-menu");
-		}
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="icon" type="image/x-icon" href="static/images/ukrain.ico" />
+        <link
+            rel="stylesheet"
+            type="text/css"
+            href="{% static 'css/home.css'%}"
+        />
+        <title>GO TO MOON</title>
+    </head>
+    <body>
+        <header>
+            <a href="index.html" class="logo">GO TO ANIME</a>
+            <ul>
+                <li><a href="#" class="active">Додому</a></li>
+                <li><a href="#">Аніме</a></li>
+                <li><a href="#">Оновлення</a></li>
+                <img
+                    src="static/images/luna.png"
+                    class="user-pic"
+                    onclick="toggleMenu()"
+                />
+            </ul>
+            <div class="sub-menu-wrap" id="subMenu">
+                <div class="sub-menu">
+                    <div class="user-info">
+                        <img src="static/images/luna.png" />
+                        <h3>Simon Bezel</h3>
+                    </div>
+                    <hr />
+                    <a href="#" class="sub-menu-link">
+                        <img src="static/images/profile.png" />
+                        <p>Профіль</p>
+                        <span>></span>
+                    </a>
+                    <a href="#" class="sub-menu-link">
+                        <img src="static/images/darkmode.png" />
+                        <p>Тема</p>
+                        <span>></span>
+                    </a>
+                    <a href="#" class="sub-menu-link">
+                        <img src="static/images/setting.png" />
+                        <p>Налаштування</p>
+                        <span>></span>
+                    </a>
+                    <a href="#" class="sub-menu-link">
+                        <img src="static/images/help.png" />
+                        <p>Допомога ЗСУ</p>
+                        <span>></span>
+                    </a>
+                    <a href="#" class="sub-menu-link">
+                        <img src="static/images/logout.png" />
+                        <p href="#" class="logout">Вихід</p>
+                        <span>></span>
+                    </a>
+                </div>
+            </div>
+        </header>
+        <div>
+            <!-- Імпортувати файл grid.html -->
+            <div id="grid"></div>
+        </div>
 
-		// Імпортувати файл grid.html
-		fetch('/grid.html')
-		.then(response => response.text())
-		.then(data => {
-			document.getElementById('grid').innerHTML = data;
-		});
-	</script>	
-	</body>
+        <div class="footer">
+            <p>© 2023 ZaL1V & OriginalSimon</p>
+            <img src="static/images/telegram.png" />
+            <img src="static/images/email.png" />
+            <img src="static/images/question.png" />
+            <img src="static/images/donat.png" />
+        </div>
+        <script>
+            let subMenu = document.getElementById("subMenu");
+            function toggleMenu() {
+                subMenu.classList.toggle("open-menu");
+            }
+
+            // Імпортувати файл grid.html
+            fetch("/grid.html")
+                .then((response) => response.text())
+                .then((data) => {
+                    document.getElementById("grid").innerHTML = data;
+                });
+        </script>
+    </body>
 </html>
