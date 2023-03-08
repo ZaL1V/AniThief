@@ -11,9 +11,6 @@ class Command(BaseCommand):
         play.anime_colection()
 
 
-from bs4 import BeautifulSoup
-import requests
-import re
 
 
 class Anime_parser:
@@ -82,10 +79,12 @@ class Anime_parser:
         print(type_anime)
 
         for series in btn:
+
             name_num = series.text #needs decorative adjustment
             href_num = 'https://jut.su/' + series.get('href')
             self.parse_video_url(href_num)
             # print(f'{name_num} : {href_num}')
+
 
 
     def parse_video_url(self, url):
@@ -96,7 +95,10 @@ class Anime_parser:
 
         video = soup.find('video').find_all('source')
 
+        poster = soup.find('video').get('poster')
+
+        # print(poster)
         for item in video:
             quality = item.get('res')
             href = item.get('src')
-            print(f'{quality} : {href}')
+            # print(f'{quality} : {href}')
