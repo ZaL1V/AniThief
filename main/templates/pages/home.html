@@ -72,18 +72,12 @@
 
         <!-- Сетка карточек -->
         <div class="cards">
-            <object class="object" type="text/html" data="card.html"></object>
-            <object class="object" type="text/html" data="card.html"></object>
-            <object class="object" type="text/html" data="card.html"></object>
-            <object class="object" type="text/html" data="card.html"></object>
-            <object class="object" type="text/html" data="card.html"></object>
-            <object class="object" type="text/html" data="card.html"></object>
-            <object class="object" type="text/html" data="card.html"></object>
-            <object class="object" type="text/html" data="card.html"></object>
-            <object class="object" type="text/html" data="card.html"></object>
-            <object class="object" type="text/html" data="card.html"></object>
-            <object class="object" type="text/html" data="card.html"></object>
-            <object class="object" type="text/html" data="card.html"></object>
+            {% for anime in animes %}
+            <div class="card" href="#">
+                <img class="images" src="{{anime.img_url}}" alt="Назва Аніме" />
+                <h1>{{anime.title}}</h1>
+            </div>
+            {% endfor %}
         </div>
 
         <div class="footer">

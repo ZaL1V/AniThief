@@ -6,7 +6,7 @@ class Anime(models.Model):
     title = models.CharField(max_length=512)
     description = models.TextField()
     img_url = models.URLField()
-    genre = models.ManyToManyField('anime.Genre', blank= True, null= True)
+    genre = models.ManyToManyField('anime.Genre', blank= True)
 
     def __str__(self):
         return self.title

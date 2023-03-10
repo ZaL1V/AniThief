@@ -1,5 +1,8 @@
 from django.shortcuts import render
+from anime.models import Anime
+
 
 def home(request):
-    return render(request, 'pages/home.html')
-# Create your views here.
+    animes = Anime.objects.all()
+    context = {'animes' : animes}
+    return render(request, 'pages/home.html', context)

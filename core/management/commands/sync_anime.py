@@ -1,5 +1,6 @@
 import requests
 import re
+import json
 from anime.models import Anime, Series, Genre
 from django.core.management.base import BaseCommand
 from bs4 import BeautifulSoup
@@ -9,7 +10,58 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         print('syncing anime ...')
         play = Anime_parser()
-        play.anime_colection()
+        play.anime_collection()
+        animes = play.anime_collection()
+
+        for anime in animes:
+            anime_db = Anime.objects.filter(title = anime['title']).first()
+
+            if not anime_db:
+                anime_db = Anime(
+                    title = anime['title'],
+                    img_url = anime['image'],
+                    description = anime['description']
+                )
+                anime_db.save()
+            else:
+                anime_db.img_url = anime['image']
+                anime_db.description = anime['description']
+
+            seasons = anime['seasons']
+            for season_number, series in seasons.items():
+                for series_number, series_data in series.items():
+                    season_n = int(season_number)
+                    series_n = int(series_number)
+                    s = Series.objects.filter(
+                        season = season_n,
+                        series_number = series_n,
+                        anime = anime_db
+                    ).first()
+                    if not s:
+                        s = Series(
+                            name = series_data['title'],
+                            preview = series_data['preview'],
+                            season = season_n,
+                            series_number = series_n,
+                            video_360 = series_data['video_360'],
+                            video_480 = series_data['video_480'],
+                            video_720 = series_data['video_720'],
+                            video_1080 = series_data['video_1080'],
+                            anime = anime_db,
+                        )
+                        s.save()
+                    else:
+                        s.name = series_data['title'],
+                        s.preview = series_data['preview'],
+                        s.video_360 = series_data['video_360'],
+                        s.video_480 = series_data['video_480'],
+                        s.video_720 = series_data['video_720'],
+                        s.video_1080 = series_data['video_1080']
+                        s.save()
+
+
+
+
 
 
 
@@ -24,12 +76,9 @@ class Anime_parser:
                 "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36 OPR/95.0.0.0"
             }
 
-        self.anime = {}
-
-
 
      #reads all anime
-    def anime_colection(self):
+    def anime_collection(self):
         anime = []
         while True:
             url = "https://jut.su/anime/page-" + str(self.page)
@@ -45,12 +94,11 @@ class Anime_parser:
 
             for item in all_anime_href:
                 anime.append(self.parse_anime_data(item))
-                print(anime)
-                break
 
 
             self.page += 1
         return anime
+
 
     def parse_anime_data(self, anime_card):
         anime_data = {}
@@ -64,11 +112,11 @@ class Anime_parser:
         anime_data['title'] = anime_name
         anime_data['image'] = anime_image
 
-        anime_data  = self.series_colection(anime_href, anime_data)
+        anime_data  = self.series_collection(anime_href, anime_data)
         return anime_data
 
 
-    def series_colection(self, url, anime_data):
+    def series_collection(self, url, anime_data):
         req = requests.get(url, headers= self.headers, timeout=None)
         src = req.text
         soup = BeautifulSoup(src, "lxml")
@@ -86,7 +134,7 @@ class Anime_parser:
 
 
         descriptions = series_card.find('p', class_='under_video uv_rounded_bottom the_hildi').find('span').text
-        type_anime = series_card.find('div', class_='under_video_additional the_hildi').text #needs decorative adjustment
+        type_anime = series_card.find('div', class_='under_video_additional the_hildi').text
 
         anime_data['description'] = descriptions
         anime_data['seasons'] = {}
@@ -112,7 +160,6 @@ class Anime_parser:
         for series_number, item in enumerate(series_nums,1):
             url_series = 'https://jut.su/' + item.get('href')
             series_name = item.text
-            self.anime['Name'] = series_name
             series[series_number] = {
                 'title' : series_name,
             }
@@ -139,6 +186,7 @@ class Anime_parser:
             'video_720' : None,
             'video_1080' : None
         }
+
         for item in video:
             quality = item.get('res')
             href = item.get('src')
