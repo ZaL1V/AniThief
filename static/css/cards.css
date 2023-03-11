@@ -1,10 +1,12 @@
 .card {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); /* добавляем тень к карточке */
     max-width: 200px; /* ограничиваем максимальную ширину карточки */
-    max-height: 400px; /* ограничиваем максимальную ширину карточки */
+    height: 350px; /* ограничиваем максимальную ширину карточки */
     margin: auto; /* центрируем карточку */
     text-align: center; /* выравниваем текст по центру */
     overflow: hidden;
+    color: var(--text-color);
+    background: var(--bg-color);
 }
 .card:hover{
     opacity: 0.7; /* добавляем эффект прозрачности при наведении */

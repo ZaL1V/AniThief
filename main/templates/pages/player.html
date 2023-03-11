@@ -1,29 +1,28 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link
-            rel="icon"
-            type="image/x-icon"
-            href="{% static 'images/ukrain.ico' %}"
-        />
-        <link
-            rel="stylesheet"
-            type="text/css"
-            href="{% static 'css/home.css' %}"
-        />
-        <link
-            rel="stylesheet"
-            type="text/css"
-            href="{% static 'css/cards.css' %}"
-        />
-        <title>GO TO ANIME</title>
-    </head>
-    <body>
-        <header>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<script src="{% static '/static/js/mode.js' %}"></script>
+		<script src="{% static '/static/js/video.js' %}"></script>
+		<link 
+			rel="icon" 
+			type="image/x-icon" 
+			href="{% static 'images/ukrain.ico' %}">
+		<link 
+			rel="stylesheet" 
+			type="text/css" 
+			href="{% static 'css/home.css' %}">
+		<link 
+			rel="stylesheet" 
+			type="text/css" 
+			href="{% static 'css/player.css' %}">
+		<title>GO TO ANIME</title>
+	</head>
+	<body>
+	<div class="wrapper">	
+		<header>
             <a href="{% url 'login' %}" class="logo">GO TO ANIME</a>
             <ul>
                 <li><a href="#" class="active">Аніме</a></li>
@@ -75,28 +74,72 @@
             </div>
         </header>
 
-        <!-- Сетка карточек -->
-        <div class="cards">
-            {% for anime in animes %}
-            <div class="card" href="#">
-                <img class="images" src="{{anime.img_url}}" alt="Назва Аніме" />
-                <h1>{{anime.title}}</h1>
-            </div>
-            {% endfor %}
-        </div>
+			<div class="container">
+				<div class="video-player">
+					<div class="controls">
+						<div class="seasons">
+							<select id="seasons-select">
+							{% for season in seasons %}
+								<option value="{{ season }}">{{ season }}</option>
+							{% endfor %}
+							</select>
+						</div>
+						<div class="seasons">
+							<select id="episodes-select">
+							{% for episode in episodes_by_season.Season1 %}
+								<option value="{{ episode }}">{{ episode }}</option>
+							{% endfor %}
+							</select>
+						</div>
 
-        <div class="footer">
+						<div class="quality">
+							<select id="quality-select">
+								<option value="360">360p</option>
+								<option value="480">480p</option>
+								<option value="720">720p</option>
+								<option value="1080">1080p</option>
+							</select>
+						</div>
+					</div>
+					{% for preview in preview %}
+					<video id="video-player" width="700" poster="{{anime.preview}}" controls>
+					{% endfor %}
+						{% for series in series %}
+						<source src="{{anime.series}}" type="video/mp4">
+						{% endfor %}
+					</video>
+				</div>
+
+				<div class="container-anime">
+					<div class="anime-image">
+						<img src="/templates/static/images/test_cover.png" alt="Anime Image" width="200" height="auto">
+						{% for anime in animes %}
+						<h2 class="anime-title">{{anime.title}}</h1>
+						{% endfor %}
+					</div>
+					<div class="anime-description">
+						<div class="anime-info">
+							<h1 class="anime-summary-title">Опис</h1>
+							{% for anime in animes %}
+							<p class="anime-summary"> {{anime.description}}</p>
+							{% endfor %}
+						</div>
+					</div>
+				</div>
+			</div>
+		<div class="footer">
             <p>© 2023 ZaL1V & OriginalSimon</p>
             <img src="{% static 'images/telegram.png' %}" />
             <img src="{% static 'static/images/email.png' %}" />
             <img src="{% static 'static/images/question.png' %}" />
             <img src="{% static 'static/images/donat.png' %}" />
         </div>
-        <script>
-            let subMenu = document.getElementById("subMenu");
-            function toggleMenu() {
-                subMenu.classList.toggle("open-menu");
-            }
-        </script>
-    </body>
+	</div>	
+	<script> 
+		let subMenu = document.getElementById('subMenu');
+		function toggleMenu() {
+			subMenu.classList.toggle("open-menu");
+		}
+	</script>	
+	</body>
 </html>
