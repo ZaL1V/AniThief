@@ -6,16 +6,33 @@
 	font-family: 'Poppins', sans-serif;
 }
 
+:root {
+	--color-logo: #7597de;
+    --bg-color: white;
+    --text-color: black;
+	--header-ul-li-a: #7597de;
+	--sub-menu-background: white;
+}
+
+[data-theme="dark"] {
+	--color-logo:  white;
+    --bg-color: #312e2e;
+    --text-color: white;
+	--header-ul-li-a: white;
+	--sub-menu-background:#e5e5e5;
+}
+
 body
 {
 	position: relative;
 	min-height: 100vh;
-	background: #fff;
+	background-color: var(--bg-color);
+    color: var(--text-color);
 }
 
 
 header
-{	padding: 40px;
+{	padding: 40px 40px 5px 40px ;
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -28,7 +45,7 @@ header
 
 header .logo
 {	
-	color: #7597de;
+	color: var(--color-logo);;
 	font-weight: 700;
 	text-decoration: none;
 	font-size: 2em;
@@ -44,7 +61,8 @@ header ul
 }
 
 header ul li
-{
+{	
+	background: #fff;
 	list-style: none;
 	margin-left: 20px;
 }
@@ -53,7 +71,7 @@ header ul li a
 {
 	text-decoration: none;
 	padding: 6px 15px;
-	color: #7597de;
+	color: var(--header-ul-li-a);
 	border-radius: 10px;
 }
 
@@ -135,7 +153,7 @@ header ul li .active
 }
 .sub-menu
 { 	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); /* добавляем тень к карточке */	
-	background: #fff;
+	background: var(--sub-menu-background);
 	padding: 20px;
 	margin: 5px;
 	border-radius: 15px;
@@ -182,6 +200,11 @@ header ul li .active
 {
 	width: 100%;
 }
+.mode{
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
 
 .sub-menu-link img
 {
@@ -193,7 +216,7 @@ header ul li .active
 }
 
 .sub-menu-link span 
-{
+{	padding-left: 40px;
 	font-size: 22px;
 	transition: transform 0.5s;
 }
@@ -210,4 +233,17 @@ header ul li .active
 	height: 100%;
 	padding: 20px;
 	flex: 1 1 auto;
+}
+select {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	font-size: 14px;
+	color: #525252;
+	background-color: white;
+	border: 1px solid gray;
+	border-radius: 15px;
+	padding: 5px;
+	text-decoration: none;
+	text-align: center;
 }
