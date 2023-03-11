@@ -1,6 +1,5 @@
 import requests
 import re
-import json
 from anime.models import Anime, Series, Genre
 from django.core.management.base import BaseCommand
 from bs4 import BeautifulSoup
@@ -51,11 +50,11 @@ class Command(BaseCommand):
                         )
                         s.save()
                     else:
-                        s.name = series_data['title'],
-                        s.preview = series_data['preview'],
-                        s.video_360 = series_data['video_360'],
-                        s.video_480 = series_data['video_480'],
-                        s.video_720 = series_data['video_720'],
+                        s.name = series_data['title']
+                        s.preview = series_data['preview']
+                        s.video_360 = series_data['video_360']
+                        s.video_480 = series_data['video_480']
+                        s.video_720 = series_data['video_720']
                         s.video_1080 = series_data['video_1080']
                         s.save()
 
@@ -94,7 +93,7 @@ class Anime_parser:
 
             for item in all_anime_href:
                 anime.append(self.parse_anime_data(item))
-
+            break
 
             self.page += 1
         return anime
@@ -161,7 +160,7 @@ class Anime_parser:
             url_series = 'https://jut.su/' + item.get('href')
             series_name = item.text
             series[series_number] = {
-                'title' : series_name,
+                'title' : series_name
             }
             series[series_number].update(self.parse_video_url(url_series))
         return series

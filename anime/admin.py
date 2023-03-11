@@ -11,6 +11,7 @@ class AnimeAdmin(admin.ModelAdmin):
         'number_of_series',
     )
 
+    search_fields = ('title', )
     @staticmethod
     def number_of_series(instance):
         return instance.series_set.count()
@@ -36,6 +37,8 @@ class SeriesAdmin(admin.ModelAdmin):
         'has_video_1080',
         'anime_link',
     )
+
+    search_fields = ('name',)
 
     def preview_(self, obj):
         if not obj.preview:
