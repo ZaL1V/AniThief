@@ -73,19 +73,25 @@
         <!-- Сетка карточек -->
         <div class="cards">
             {% for anime in animes %}
-            <div class="card" href="#">
-                <img class="images" src="{{anime.img_url}}" alt="Назва Аніме" />
-                <h1>{{anime.title}}</h1>
-            </div>
+            <a href="{% url 'anime_detail' anime_id=anime.id %}">
+                <div class="card">
+                    <img
+                        class="images"
+                        src="{{anime.img_url}}"
+                        alt="Назва Аніме"
+                    />
+                    <h1>{{anime.title}}</h1>
+                </div></a
+            >
             {% endfor %}
         </div>
 
         <div class="footer">
             <p>© 2023 ZaL1V & OriginalSimon</p>
-            <img src="static/images/telegram.png" />
-            <img src="static/images/email.png" />
-            <img src="static/images/question.png" />
-            <img src="static/images/donat.png" />
+            <img src="{% static 'images/telegram.png' %}" />
+            <img src="{% static 'images/email.png' %}" />
+            <img src="{% static 'images/question.png' %}" />
+            <img src="{% static 'images/donat.png' %}" />
         </div>
         <script>
             let subMenu = document.getElementById("subMenu");

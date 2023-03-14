@@ -6,26 +6,26 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<script src="{% static '/static/js/mode.js' %}"></script>
 		<script src="{% static '/static/js/video.js' %}"></script>
-		<link 
-			rel="icon" 
-			type="image/x-icon" 
+		<link
+			rel="icon"
+			type="image/x-icon"
 			href="{% static 'images/ukrain.ico' %}">
-		<link 
-			rel="stylesheet" 
-			type="text/css" 
+		<link
+			rel="stylesheet"
+			type="text/css"
 			href="{% static 'css/home.css' %}">
-		<link 
-			rel="stylesheet" 
-			type="text/css" 
+		<link
+			rel="stylesheet"
+			type="text/css"
 			href="{% static 'css/player.css' %}">
 		<title>GO TO ANIME</title>
 	</head>
 	<body>
-	<div class="wrapper">	
+	<div class="wrapper">
 		<header>
-            <a href="{% url 'login' %}" class="logo">GO TO ANIME</a>
+            <a href="{% url 'home' %}" class="logo">GO TO ANIME</a>
             <ul>
-                <li><a href="#" class="active">Аніме</a></li>
+                <li><a href="#" class="active">{{anime.title}}</a></li>
                 <li><a href="#">Оновлення</a></li>
                 <img
                     src="{% static 'images/luna.png' %}"
@@ -78,16 +78,9 @@
 				<div class="video-player">
 					<div class="controls">
 						<div class="seasons">
-							<select id="seasons-select">
-							{% for season in seasons %}
-								<option value="{{ season }}">{{ season }}</option>
-							{% endfor %}
-							</select>
-						</div>
-						<div class="seasons">
 							<select id="episodes-select">
-							{% for episode in episodes_by_season.Season1 %}
-								<option value="{{ episode }}">{{ episode }}</option>
+							{% for s in series %}
+								<option value="{{ episode }}">{{ s }}</option>
 							{% endfor %}
 							</select>
 						</div>
@@ -101,28 +94,23 @@
 							</select>
 						</div>
 					</div>
-					{% for preview in preview %}
-					<video id="video-player" width="700" poster="{{anime.preview}}" controls>
+					{% for s in series %}
+					<video id="video-player" width="700" poster="{{episode.preview}}" controls>
+
+						<source src="{{episode.video_1080}}" type="video/mp4">
 					{% endfor %}
-						{% for series in series %}
-						<source src="{{anime.series}}" type="video/mp4">
-						{% endfor %}
 					</video>
 				</div>
 
 				<div class="container-anime">
 					<div class="anime-image">
-						<img src="/templates/static/images/test_cover.png" alt="Anime Image" width="200" height="auto">
-						{% for anime in animes %}
+						<img src="{{anime.img_url}}" alt="Anime Image" width="200" height="auto">
 						<h2 class="anime-title">{{anime.title}}</h1>
-						{% endfor %}
 					</div>
 					<div class="anime-description">
 						<div class="anime-info">
 							<h1 class="anime-summary-title">Опис</h1>
-							{% for anime in animes %}
 							<p class="anime-summary"> {{anime.description}}</p>
-							{% endfor %}
 						</div>
 					</div>
 				</div>
@@ -130,16 +118,16 @@
 		<div class="footer">
             <p>© 2023 ZaL1V & OriginalSimon</p>
             <img src="{% static 'images/telegram.png' %}" />
-            <img src="{% static 'static/images/email.png' %}" />
-            <img src="{% static 'static/images/question.png' %}" />
-            <img src="{% static 'static/images/donat.png' %}" />
+            <img src="{% static 'images/email.png' %}" />
+            <img src="{% static 'images/question.png' %}" />
+            <img src="{% static 'images/donat.png' %}" />
         </div>
-	</div>	
-	<script> 
+	</div>
+	<script>
 		let subMenu = document.getElementById('subMenu');
 		function toggleMenu() {
 			subMenu.classList.toggle("open-menu");
 		}
-	</script>	
+	</script>
 	</body>
 </html>

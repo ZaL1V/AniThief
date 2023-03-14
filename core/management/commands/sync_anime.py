@@ -93,7 +93,7 @@ class Anime_parser:
 
             for item in all_anime_href:
                 anime.append(self.parse_anime_data(item))
-            break
+
 
             self.page += 1
         return anime
